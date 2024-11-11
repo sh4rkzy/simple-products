@@ -1,0 +1,29 @@
+# Ignorar o executável compilado localmente
+/go-rest
+
+# Ignorar arquivos de controle de versão
+.git
+.gitignore
+
+# Ignorar arquivos de configuração do editor
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Ignorar dependências e caches locais
+node_modules/
+vendor/
+
+# Ignorar arquivos de configuração locais
+.env
+*.local
+
+# Ignorar dados de build
+/build/
+dist/
+
+# Ignorar arquivos temporários
+*.log
+*.tmp
+*.out
