@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/sh4rkzy/infrastructure/database"
@@ -9,16 +10,24 @@ import (
 )
 
 func main() {
-	router := gin.Default()
+	ctx := context.Background()
 
-	router.GET("/health", healthController.HealthChecked)
-	router.GET("/products", controllers.GetProducts)
-	port := ":8080"
-	fmt.Println("Server running on port", port)
-
-	if err := database.Connector(); err != nil {
-		fmt.Println("Error connecting to database:", err)
+	// Conecte-se ao banco de dados
+	client := database.Connector()
+	if err := client.Ping(ctx, nil); err != nil {
+		fmt.Println("Erro ao conectar ao banco de dados")
 		return
 	}
+	defer client.Disconnect(ctx)
+
+	router := gin.Default()
+	api := router.Group("/api/v1")
+	{
+		api.GET("/health", healthcheck.HealthChecked)
+		api.GET("/products", products.GetProducts)
+	}
+
+	port := ":8080"
+	fmt.Println("Server running on port", port)
 	router.Run(port)
 }

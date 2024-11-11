@@ -9,22 +9,22 @@ import (
 	"os"
 )
 
+func HandleError(message string, err error) {
+	if err != nil {
+		log.Fatalf("%s: %v", message, err)
+	}
+}
+
 func Connector() *mongo.Client {
 	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Erro ao carregar o arquivo .env")
-	}
+	HandleError("Erro ao carregar o arquivo .env", err)
 
 	clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
 	client, err := mongo.Connect(context.Background(), clientOptions)
-	if err != nil {
-		log.Fatal(err)
-	}
+	HandleError("Erro ao conectar ao MongoDB", err)
 
 	err = client.Ping(context.Background(), nil)
-	if err != nil {
-		log.Fatal("Erro ao conectar ao MongoDB:", err)
-	}
+	HandleError("Erro ao verificar a conexão com o MongoDB", err)
 
 	return client
 }
