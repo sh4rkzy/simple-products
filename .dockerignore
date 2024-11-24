@@ -16,7 +16,6 @@ node_modules/
 vendor/
 
 # Ignorar arquivos de configuração locais
-.env
 *.local
 
 # Ignorar dados de build
