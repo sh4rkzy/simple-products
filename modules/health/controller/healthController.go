@@ -17,7 +17,9 @@ func HealthChecked(c *gin.Context) {
 	if err != nil {
 		response = gin.H{
 			"status_code": 400,
-			"message":     "Erro ao conectar ao banco de dados",
+			"application": "OK",
+			"databases":   "NOK",
+			"detailed":    err.Error(),
 			"transaction": gin.H{
 				"transaction_id": uuids.GenerateUuid(),
 				"timestamp":      time.Now().Format("2006-01-02 15:04:05"),
@@ -26,7 +28,8 @@ func HealthChecked(c *gin.Context) {
 	} else {
 		response = gin.H{
 			"status_code": 200,
-			"message":     "OK",
+			"application": "OK",
+			"databases":   "OK",
 			"transaction": gin.H{
 				"transaction_id": uuids.GenerateUuid(),
 				"timestamp":      time.Now().Format("2006-01-02 15:04:05"),

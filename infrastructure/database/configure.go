@@ -26,5 +26,6 @@ func Connector() *mongo.Client {
 	err = client.Ping(context.Background(), nil)
 	HandleError("Erro ao verificar a conexão com o MongoDB", err)
 
+	log.Println("Conexão com MongoDB estabelecida com sucesso")
 	return client
 }
