@@ -1,7 +1,7 @@
-package uuids
+package utils
 
 import "github.com/google/uuid"
 
-func GenerateUuid() any {
+func GenerateUuid() string {
 	return uuid.New().String()
 }

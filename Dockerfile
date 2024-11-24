@@ -1,22 +1,32 @@
-FROM golang:1.18-alpine AS build
+# Etapa de build
+FROM golang:1.23-alpine AS build
 
+# Instalar dependências necessárias
 RUN apk add --no-cache git
 
 WORKDIR /app
 
+# Copiar arquivos de dependências primeiro
 COPY go.mod go.sum ./
 RUN go mod download
 
+# Copiar todo o código-fonte para o container
 COPY . .
 
-RUN go build -o rest-go .
+# Compilar o binário
+RUN go build -o app /app/cmd/main.go
 
-FROM alpine:latest AS production-stage
+# Etapa de produção
+FROM alpine:latest AS production
 
 WORKDIR /root/
 
-COPY --from=build /app/rest-go .
+# Copiar o binário gerado
+COPY --from=build /app/app .
 
-EXPOSE 8080
+COPY .env /root/.env
+# Expor a porta usada pela aplicação
+EXPOSE 3000
 
-CMD ["./myapp"]
+# Comando de inicialização
+CMD ["./app"]
